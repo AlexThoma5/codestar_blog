@@ -19,3 +19,14 @@ class TestAboutViews(TestCase):
         self.assertIn(b"About title", response.content)
         self.assertIn(b"some content for about", response.content)
         self.assertIsInstance(response.context['collaborate_form'], CollaborateForm)
+
+    def test_successful_collaboration_request(self):
+        """ Test for user requesting a collaboration """
+        post_data = {
+            'name': 'McTester',
+            'email': 'McTester@email.com',
+            'message': 'This is a test message',
+        }
+        response = self.client.post(reverse('about'), post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Collaboration request received! I endeavour to respond within 2 working days.", response.content)
